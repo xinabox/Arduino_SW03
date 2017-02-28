@@ -1,6 +1,6 @@
 /*************************************************************
 	This is an examples for the SW03
-	Digital Temperature, Pressure and Humidity Sensor
+	Digital Temperature, Pressure and Altitude Sensor
 	
 	You can buy one on our store!
 	-----> https://xinabox.cc/SW03/
