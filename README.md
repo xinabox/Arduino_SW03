@@ -6,4 +6,4 @@
   - ☒CHIP CWO1 or CC01 or CR01
   
 ## Installation Guide
-To install the libraries please followed the guide provided on the [Arduino Website](https://www.arduino.cc/en/Guide/Libraries) under "**Importing a .zip Library**".
+To install the libraries please follow the guide provided on the [Arduino Website](https://www.arduino.cc/en/Guide/Libraries) under "**Importing a .zip Library**".
