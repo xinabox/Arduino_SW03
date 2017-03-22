@@ -1,4 +1,4 @@
-# xSW03
+# ☒CHIP SW03
 <img src="extras/SW03.png" width="300" align="right">
 
 ## Requirments
