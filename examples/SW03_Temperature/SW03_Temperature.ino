@@ -5,8 +5,8 @@
 	You can buy one on our store!
 	-----> https://xinabox.cc/SW03/
 	
-	This example request a altitude meausrement to be 
-	made by the SW01 and display the data over the Serial
+	This example request an temperature meausrement to be 
+	made by the SW03 and display the data over the Serial
 	bus.
 	
 	Currently Supported on:
