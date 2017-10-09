@@ -1,5 +1,5 @@
 # ☒CHIP SW03
-<img src="extras/SW03.png" width="300" align="right">
+<img src="extras/SW03 V0.4.1.JPG" width="300" align="right">
 
 ## Requirments
   - [xCore Library](https://github.com/xinabox/xCore)
