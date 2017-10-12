@@ -1,25 +1,21 @@
 /*************************************************************
-	This is an examples for the SW03
-	Digital Temperature, Pressure and Altitude Sensor
+	This is an example for the SW03
+	Digital Temperature, Pressure and Humidity Sensor
 	
 	You can buy one on our store!
-	-----> https://xinabox.cc/SW03/
+	-----> https://xinabox.cc/products/SW03
 	
-	This example request an altitude meausrement to be 
-	made by the SW03 and display the data over the Serial
+	This example request a altitude meausrement to be 
+	made by the SW01 and display the data over the Serial
 	bus.
 	
-	Currently Supported on:
-	- CW01
-	- CC01
-	- CR01
+	Supported on the all ☒CHIPs
 	
 	The sensor communicates over the I2C Bus.
 	
 	------------------------TIPS--------------------------
-	Change this line ----->Wire.begin(2,14);
-	to this			 ----->Wire.begin();
-	to allow this sensor to communicate with CC01 and CR01
+	Comment out this line ----->Wire.pins(2, 14); for support
+	on other devices
 	
 *************************************************************/
 
@@ -32,8 +28,11 @@ void setup(){
 	// Start the Serial Monitor
 	Serial.begin(115200);
 	
+	// Set the I2C Pins for CW01
+	//Wire.pins(2, 14);	
+	
 	// Start the I2C Comunication
-	Wire.begin(2,14);
+	Wire.begin();
 	
 	// Start the SW03 Sensor
 	SW03.begin();
@@ -54,11 +53,12 @@ void loop() {
 	
 	// Request SW03 to get the altitude measurement and store in
 	// the altitude variable
-	value = SW03.getAltitude();
+	altitude = SW03.getAltitude();
 	
 	// Display the recoreded data over the Serial Monitor
-	Serial.println("Altitude: ");
+	Serial.print("Altitude: ");
 	Serial.print(altitude);
-	Serial.print(" m");
+	Serial.println("m");
+	
 	delay(DELAY_TIME);
 }

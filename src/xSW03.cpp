@@ -26,43 +26,53 @@ xSW03::xSW03(){
 /********************************************************
  	Configure Sensor
 *********************************************************/
-bool xSW03::begin(){
-	uint8_t whoami = xCore.read8(MPL3115A2_I2C_ADDRESS,MPL3115A2_WHOAMI);
-	if (whoami != 0xC4) {
-		return false;
+bool xSW03::begin(void){
+	uint8_t ID = 0;
+	
+	ID = xCore.read8(MPL3115A2_I2C_ADDRESS, MPL3115A2_WHOAMI);
+	
+	if( ID == 0xC4 ){ 
+		xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_CTRL_REG, (MPL3115A2_MODE_BARO|MPL3115A2_CTRL_REG1_OS128));
+		xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_PT_DATA_CFG, (MPL3115A2_PT_DATA_CFG_TDEFE|MPL3115A2_PT_DATA_CFG_PDEFE|MPL3115A2_PT_DATA_CFG_DREM));
+		return true;
+	} else {
+	return false;
 	}
-	xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_CTRL_REG1,MPL3115A2_CTRL_REG1_SBYB |MPL3115A2_CTRL_REG1_OS128 | MPL3115A2_CTRL_REG1_ALT);
-	xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_PT_DATA_CFG, MPL3115A2_PT_DATA_CFG_TDEFE |MPL3115A2_PT_DATA_CFG_PDEFE | MPL3115A2_PT_DATA_CFG_DREM);
-	return true;
 }
 
 /********************************************************
  	Read Data from MPL3115A2 Sensor
 *********************************************************/
-void xSW03::poll(){
+void xSW03::poll(void){
 	readTemperature();
 	readPressure();
-	readAltitude();
 }
 
 /********************************************************
  	Read Temperature from MPL3115A2 Sensor
 *********************************************************/
-float xSW03::getTemperature(){
+float xSW03::getTempC(void){
+	return temperature;
+}
+
+float xSW03::getTempF(void){
+	temperature = temperature * 1.8 + 32;
 	return temperature;
 }
 
 /********************************************************
  	Read Altitude from MPL3115A2 Sensor
 *********************************************************/
-float xSW03::getAltitude(){
+float xSW03::getAltitude(void){
+	float atmospheric = pressure / 100.0F;
+	altitude = 44330.0 * (1.0 - pow(atmospheric / 1013.25, 0.1903));
 	return altitude;
 }
 
 /********************************************************
  	Read Pressure from MPL3115A2 Sensor 
 *********************************************************/
-float xSW03::getPressure(){
+float xSW03::getPressure(void){
 	return pressure;
 }
 
@@ -71,59 +81,43 @@ float xSW03::getPressure(){
 /********************************************************
  	Read Pressure from MPL3115A2 Sensor 
 *********************************************************/
-void xSW03::readPressure() {
-	uint32_t pres;
-
-	xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_CTRL_REG1, MPL3115A2_CTRL_REG1_SBYB | MPL3115A2_CTRL_REG1_OS128 | MPL3115A2_CTRL_REG1_BAR);
-
+void xSW03::readPressure(void) {
+	uint32_t temp_pressure = 0;
+	
+	xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_CTRL_REG, (MPL3115A2_MODE_BARO|MPL3115A2_CTRL_REG1_OS128|MPL3115A2_CTRL_REG1_SBYB));
+	
 	uint8_t sta = 0;
 	while (! (sta & MPL3115A2_REG_STATUS_PDR)) {
     sta = xCore.read8(MPL3115A2_I2C_ADDRESS,MPL3115A2_REG_STATUS);
     delay(10);
 	}
 	
-	pres = xCore.read24(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_PRESSURE_MSB);
-	pres >>= 4;
+	xCore.write1(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_PRESSURE_MSB);
 	
-	float baro = pres;
-	baro /= 4.0;
-	pressure = baro;
+	temp_pressure = xCore.read24(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_PRESSURE_MSB);
+	temp_pressure >>= 4;
+	
+	float calc_pressure = temp_pressure;
+	calc_pressure /= 4.0;
+	pressure = calc_pressure;
 }
 
-/********************************************************
- 	Read Altitude from MPL3115A2 Sensor 
-*********************************************************/
-void xSW03::readAltitude() {
-	uint32_t alt;
-	xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_CTRL_REG1, MPL3115A2_CTRL_REG1_SBYB | MPL3115A2_CTRL_REG1_OS128 | MPL3115A2_CTRL_REG1_ALT);
-	uint8_t sta = 0;
-	while (! (sta & MPL3115A2_REG_STATUS_PDR)) {
-		sta = xCore.read8(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_STATUS);
-		delay(10);
-	}
-	
-	alt = xCore.read24(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_PRESSURE_MSB);
-	alt >>= 4;
-
-	if (alt & 0x80000) {
-		alt |= 0xFFF00000;
-	}
-
-	altitude = alt;
-	altitude /= 16.0;
-}
 
 /********************************************************
  	Read Temperature from MPL3115A2 Sensor 
 *********************************************************/
-void xSW03::readTemperature() {
+void xSW03::readTemperature(void) {
 	int16_t t;
-
+	
+	xCore.write8(MPL3115A2_I2C_ADDRESS, MPL3115A2_CTRL_REG, (MPL3115A2_MODE_ALTI|MPL3115A2_CTRL_REG1_OS128|MPL3115A2_CTRL_REG1_SBYB));
+	
 	uint8_t sta = 0;
 	while (! (sta & MPL3115A2_REG_STATUS_TDR)) {
 		sta = xCore.read8(MPL3115A2_I2C_ADDRESS,MPL3115A2_REG_STATUS);
 		delay(10);
 	}
+	
+	xCore.write1(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_TEMP_MSB);
 	
 	t = xCore.read16(MPL3115A2_I2C_ADDRESS, MPL3115A2_REG_TEMP_MSB);
 	t >>= 4;
@@ -131,5 +125,6 @@ void xSW03::readTemperature() {
 	temperature = t;
 	temperature /= 16.0;
 }
+
 
 xSW03 SW03 = xSW03();
