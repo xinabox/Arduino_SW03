@@ -1,5 +1,6 @@
 # ☒CHIP SW03
-<img src="extras/SW03 V0.4.1.JPG" width="300" align="right">
+<img src="extras/SW03 V0.4.1.JPG" width="35%" height="auto" align="right">
+Digital (I2C)Pressure and Temperature Sensor.
 
 ## Requirments
   - [xCore Library](https://github.com/xinabox/xCore)
