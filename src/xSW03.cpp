@@ -125,6 +125,3 @@ void xSW03::readTemperature(void) {
 	temperature = t;
 	temperature /= 16.0;
 }
-
-
-xSW03 SW03 = xSW03();
