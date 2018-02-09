@@ -155,6 +155,4 @@ class xSW03: public xCoreClass
 
 };
 
-extern xSW03 SW03;
-
 #endif
