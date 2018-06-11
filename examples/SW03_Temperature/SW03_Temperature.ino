@@ -54,7 +54,7 @@ void loop() {
 	
 	// Request SW03 to get the temperature measurement and store in
 	// the temperature variable
-	temperature = SW03.getTemperature();
+	temperature = SW03.getTempC();
 	
 	// Display the recorded data over the serial monitor
 	Serial.print("Temperature: ");
