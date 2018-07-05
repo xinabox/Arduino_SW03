@@ -1,6 +1,6 @@
 # ☒CHIP SW03
 <img src="extras/SW03 V0.4.1.JPG" width="35%" height="auto" align="right">
-Digital (I2C)Pressure and Temperature Sensor.
+Digital (I2C)Pressure and Temperature Sensor based on the MPL3115A2.
 
 This module can be purchased on [Xinabox CC](https://xinabox.cc/products/SW03/).
 
