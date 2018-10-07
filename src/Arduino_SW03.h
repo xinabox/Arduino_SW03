@@ -11,8 +11,8 @@
 	MPL3315A2 - http://www.nxp.com/assets/documents/data/en/data-sheets/MPL3115A2.pdf
 */
 
-#ifndef xSW03_h
-#define xSW03_h
+#ifndef Arduino_SW03_h
+#define Arduino_SW03_h
 
 // System Includes
 #include <inttypes.h>
