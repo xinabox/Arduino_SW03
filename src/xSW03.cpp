@@ -12,7 +12,7 @@
 */
 
 // System Includes
-#include <arduino-SW03.h>
+#include <xSW03.h>
 
 /********************************************************
  	Constructor
