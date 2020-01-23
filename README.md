@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/xinabox/arduino-SW03.svg?branch=master)](https://travis-ci.org/xinabox/arduino-SW03)
-
+[![GitHub issues](https://img.shields.io/github/issues/xinabox/arduino-SW03.svg)](https://github.com/xinabox/arduino-SW03/issues)
 # ☒CHIP SW03
 <img src="extras/SW03 V0.4.1.JPG" width="35%" height="auto" align="right">
 Digital (I2C)Pressure and Temperature Sensor based on the MPL3115A2.
